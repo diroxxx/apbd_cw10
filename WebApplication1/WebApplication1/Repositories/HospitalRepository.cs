@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using WebApplication1.Data;
+using WebApplication1.DTOs;
 using WebApplication1.Models;
 
 namespace WebApplication1.Controllers;
@@ -25,11 +26,10 @@ public class HospitalRepository: IHospitalRepository
         return isIdMed;
     }
 
-    public async Task addPatient(Patient patient)
+    public async Task addPatient(AddPatientDTO patient)
     {
         _context.Patients.Add(new Patient()
         {
-            IdPatient = patient.IdPatient,
             FirstName = patient.FirstName,
             LastName = patient.LastName,
             Birthdate = patient.Birthdate
@@ -45,5 +45,40 @@ public class HospitalRepository: IHospitalRepository
         }
 
         return false;
+    }
+
+    public async Task<bool> DoesDoctorExist(int idDoctor)
+    {
+        var isDoctor = await _context.Doctors.AnyAsync(i => i.IdDoctor == idDoctor);
+        return isDoctor;
+    }
+
+    public async Task<int> AddPrescription(AddPrescription addPrescription)
+    {
+        var addedPre = new Prescription()
+        {
+            Date = addPrescription.Date,
+            DueDate = addPrescription.DueDate,
+            IdPatient = addPrescription.patient.IdPatient,
+            IdDoctor = addPrescription.IdDoctor
+        };
+        
+        _context.Prescriptions.Add(addedPre);
+        await _context.SaveChangesAsync();
+        return addedPre.IdPrescription;
+    }
+
+    public async Task AddPrescriptionAndMedicament(int idPrescription, AddMeddDTO addMeddDto)
+    {
+        var pre_med = new PrescriptionMedicament()
+        {
+            IdMedicament = addMeddDto.idMedicament,
+            IdPrescription = idPrescription,
+            Dose = addMeddDto.Dose,
+            Details = addMeddDto.Details
+        };
+
+        _context.PrescriptionMedicaments.Add(pre_med);
+        await _context.SaveChangesAsync();
     }
 }

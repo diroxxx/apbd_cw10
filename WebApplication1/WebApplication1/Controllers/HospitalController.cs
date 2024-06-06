@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Transactions;
+using Microsoft.AspNetCore.Mvc;
 using WebApplication1.DTOs;
+using WebApplication1.Models;
 
 namespace WebApplication1.Controllers;
 [ApiController]
@@ -22,10 +24,49 @@ public class HospitalController:ControllerBase
           await _hospitalRepository.addPatient(addPrescription.patient);
         }
 
+        if (addPrescription.medicaments.Count > 10)
+        {
+            return BadRequest("To much medicaments added(max 10)");
+        }
+
         if (!await _hospitalRepository.DoesDueDataGratherOrEqualData(addPrescription.DueDate, addPrescription.Date))
         {
             return BadRequest("DueData is not grather or equal to Data");
         }
+
+        foreach (var medicament  in addPrescription.medicaments)
+        {
+            if (! await _hospitalRepository.DoesMedicamentExist(medicament.idMedicament))
+            {
+                return NotFound("Given Medicament doesn't exists");
+            }
+
+            if (!await _hospitalRepository.DoesDoctorExist(addPrescription.IdDoctor))
+            {
+                return NotFound("Given idDoctor doesn't exists");
+            }
+            
+            var idPrescription = await _hospitalRepository.AddPrescription(addPrescription);
+            
+            using (TransactionScope scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+            {
+                foreach (var medd in addPrescription.medicaments)
+                {
+                  await _hospitalRepository.AddPrescriptionAndMedicament(idPrescription, medd);
+                }
+                
+                scope.Complete();
+            }
+        }
+        
+        return Ok();
+    }
+
+
+    [HttpGet]
+    public async Task<IActionResult> GetPatient()
+    {
+        return Ok();
     }
     
 }
