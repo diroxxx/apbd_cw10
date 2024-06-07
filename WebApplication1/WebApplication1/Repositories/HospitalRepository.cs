@@ -37,7 +37,7 @@ public class HospitalRepository: IHospitalRepository
        await _context.SaveChangesAsync();
     }
 
-    public async Task<bool> DoesDueDataGratherOrEqualData(DateTime DueData, DateTime Data)
+    public async  Task<bool> DoesDueDataGratherOrEqualData(DateTime DueData, DateTime Data)
     {
         if (DueData >= Data)
         {
@@ -81,4 +81,42 @@ public class HospitalRepository: IHospitalRepository
         _context.PrescriptionMedicaments.Add(pre_med);
         await _context.SaveChangesAsync();
     }
+
+    
+
+    public async Task<IEnumerable<GetPrescription>> GetPrescription(int idPatient)
+    {
+        var result = await _context.Prescriptions
+            .Where(p => p.IdPatient == idPatient)
+            .Select(p => new GetPrescription
+            {
+                IdPrescription = p.IdPrescription,
+                Date = p.Date,
+                DueDate = p.DueDate,
+                Medicaments = p.PrescriptionMedicaments
+                    .Join(_context.Medicaments,
+                        pm => pm.IdMedicament,
+                        m => m.IdMedicament,
+                        (pm, m) => new GetMedicament
+                        {
+                            IdMedicaments = m.IdMedicament,
+                            Name = m.Name,
+                            Description = m.Description,
+                            Dose = pm.Dose,
+                        })
+                    .ToList(),
+                Doctor = new GetDoctor
+                {
+                    IdDoctor = p.Doctor.IdDoctor,
+                    FirstName = p.Doctor.FirstName,
+                }
+            })
+            .ToListAsync();
+
+        return result;
+    }
+
+
+    
+    
 }

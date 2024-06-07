@@ -6,7 +6,7 @@ namespace WebApplication1.DTOs;
 public class GetPatient
 {
     public Patient Patient { get; set; }
-    public List<GetPrescription> Type { get; set; }
+    public List<GetPrescription> Prescriptions { get; set; }
 }
 
 public class GetPrescription
@@ -22,7 +22,7 @@ public class GetMedicament
 {
     public  int IdMedicaments { get; set; }
     public  String Name { get; set; }
-    public  int Dose { get; set; }
+    public  int? Dose { get; set; }
     public  String Description { get; set; }
 }
 

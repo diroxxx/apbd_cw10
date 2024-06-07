@@ -50,23 +50,31 @@ public class HospitalController:ControllerBase
             
             using (TransactionScope scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
-                foreach (var medd in addPrescription.medicaments)
+                foreach (var medd in addPrescription.medicaments) 
                 {
-                  await _hospitalRepository.AddPrescriptionAndMedicament(idPrescription, medd);
+                    await _hospitalRepository.AddPrescriptionAndMedicament(idPrescription, medd);
                 }
-                
                 scope.Complete();
             }
         }
-        
         return Ok();
     }
 
 
     [HttpGet]
-    public async Task<IActionResult> GetPatient()
+    [Route("getInfo/{idPatient}")]
+    public async Task<IActionResult> GetPatient(int idPatient)
     {
-        return Ok();
+        if (!await _hospitalRepository.DoesPatientExist(idPatient))
+        {
+            return NotFound("Given idPatient doesn't exist");
+        }
+
+        GetPatient infoAboutPatient = null;
+
+        var result = await _hospitalRepository.GetPrescription(idPatient);
+        
+        return Ok(result);
     }
     
 }

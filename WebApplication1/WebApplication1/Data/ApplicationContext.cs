@@ -55,7 +55,8 @@ public class ApplicationContext : DbContext
         {
             new () {IdMedicament = 1, IdPrescription = 3, Dose = 2, Details = "saasdasdasd"},
             new () {IdMedicament = 2, IdPrescription = 2, Dose = 2, Details = "xxx"},
-            new () {IdMedicament = 1, IdPrescription = 2, Dose = 2, Details = "bbb"}
+            new () {IdMedicament = 1, IdPrescription = 2, Dose = 2, Details = "bbb"},
+            new () {IdMedicament = 3, IdPrescription = 2, Dose = 12, Details = "xa"}
         });
 
 

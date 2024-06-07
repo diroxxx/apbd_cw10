@@ -13,4 +13,8 @@ public interface IHospitalRepository
     Task<bool> DoesDoctorExist(int idDoctor);
     Task<int> AddPrescription(AddPrescription addPrescription);
     Task AddPrescriptionAndMedicament(int idPrescription, AddMeddDTO addMeddDto);
+    Task<IEnumerable<GetPrescription>> GetPrescription(int idPatient);
+
+
+
 }
