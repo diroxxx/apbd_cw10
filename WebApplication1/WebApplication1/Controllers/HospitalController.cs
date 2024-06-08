@@ -69,12 +69,17 @@ public class HospitalController:ControllerBase
         {
             return NotFound("Given idPatient doesn't exist");
         }
-
-        GetPatient infoAboutPatient = null;
-
         var result = await _hospitalRepository.GetPrescription(idPatient);
+        //testuje 2 rozwiazanie
         
-        return Ok(result);
+        GetPatient infoAboutPatient = new GetPatient();
+        infoAboutPatient.Patient = await _hospitalRepository.GetPatient(idPatient);
+        infoAboutPatient.Prescriptions = result;
+        
+        
+        
+        
+        return Ok(infoAboutPatient);
     }
     
 }

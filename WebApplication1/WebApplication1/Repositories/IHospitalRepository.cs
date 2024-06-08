@@ -14,6 +14,12 @@ public interface IHospitalRepository
     Task<int> AddPrescription(AddPrescription addPrescription);
     Task AddPrescriptionAndMedicament(int idPrescription, AddMeddDTO addMeddDto);
     Task<IEnumerable<GetPrescription>> GetPrescription(int idPatient);
+    Task<PatientDTO> GetPatient(int idPatient);
+
+    // Task<GetPrescription>
+
+
+
 
 
 

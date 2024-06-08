@@ -117,6 +117,17 @@ public class HospitalRepository: IHospitalRepository
     }
 
 
+    public async Task<PatientDTO> GetPatient(int idPatient)
+    {
+        var patient = await _context.Patients.FirstOrDefaultAsync(i => i.IdPatient == idPatient);
+        return new PatientDTO()
+        {
+            idPesel = patient.IdPatient,
+            FirstName = patient.FirstName,
+            LastName = patient.LastName,
+            Birthdate = patient.Birthdate
+        };
+    }
     
     
 }

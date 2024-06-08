@@ -49,6 +49,7 @@ public class ApplicationContext : DbContext
             new () { IdPrescription = 1, Date = DateTime.Now, DueDate = DateTime.Now, IdPatient = 2, IdDoctor = 1},
             new () { IdPrescription = 2, Date = DateTime.Now, DueDate = DateTime.Now, IdPatient = 1, IdDoctor = 2},
             new () { IdPrescription = 3, Date = DateTime.Now, DueDate = DateTime.Now, IdPatient = 3, IdDoctor = 1},
+            new () { IdPrescription = 4, Date = DateTime.Now, DueDate = DateTime.Now, IdPatient = 1, IdDoctor = 1}
         });
 
         modelBuilder.Entity<PrescriptionMedicament>().HasData(new List<PrescriptionMedicament>()
@@ -56,7 +57,8 @@ public class ApplicationContext : DbContext
             new () {IdMedicament = 1, IdPrescription = 3, Dose = 2, Details = "saasdasdasd"},
             new () {IdMedicament = 2, IdPrescription = 2, Dose = 2, Details = "xxx"},
             new () {IdMedicament = 1, IdPrescription = 2, Dose = 2, Details = "bbb"},
-            new () {IdMedicament = 3, IdPrescription = 2, Dose = 12, Details = "xa"}
+            new () {IdMedicament = 3, IdPrescription = 2, Dose = 12, Details = "xa"},
+            new () {IdMedicament = 4, IdPrescription = 4, Dose = 9, Details = "x"}
         });
 
 

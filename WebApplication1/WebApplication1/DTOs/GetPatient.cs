@@ -5,8 +5,8 @@ namespace WebApplication1.DTOs;
 
 public class GetPatient
 {
-    public Patient Patient { get; set; }
-    public List<GetPrescription> Prescriptions { get; set; }
+    public PatientDTO Patient { get; set; }
+    public IEnumerable<GetPrescription> Prescriptions { get; set; }
 }
 
 public class GetPrescription
@@ -30,4 +30,12 @@ public class GetDoctor
 {
     public int IdDoctor { get; set; }
     public String FirstName { get; set; }
+}
+
+public class PatientDTO
+{
+    public int idPesel { get; set; }
+    public String FirstName { get; set; }
+    public String LastName { get; set; }
+    public DateTime Birthdate { get; set; }
 }
