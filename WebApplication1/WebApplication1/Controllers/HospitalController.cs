@@ -46,10 +46,11 @@ public class HospitalController:ControllerBase
                 return NotFound("Given idDoctor doesn't exists");
             }
             
-            var idPrescription = await _hospitalRepository.AddPrescription(addPrescription);
             
             using (TransactionScope scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
-            {
+            { 
+                var idPrescription = await _hospitalRepository.AddPrescription(addPrescription);
+
                 foreach (var medd in addPrescription.medicaments) 
                 {
                     await _hospitalRepository.AddPrescriptionAndMedicament(idPrescription, medd);
@@ -70,7 +71,7 @@ public class HospitalController:ControllerBase
             return NotFound("Given idPatient doesn't exist");
         }
         var result = await _hospitalRepository.GetPrescription(idPatient);
-        //testuje 2 rozwiazanie
+        
         
         GetPatient infoAboutPatient = new GetPatient();
         infoAboutPatient.Patient = await _hospitalRepository.GetPatient(idPatient);
