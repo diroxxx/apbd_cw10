@@ -33,7 +33,10 @@ public class HospitalController:ControllerBase
         {
             return BadRequest("DueData is not grather or equal to Data");
         }
+        
+        
 
+        List<PrescriptionMedicament> medicaments = new List<PrescriptionMedicament>();
         foreach (var medicament  in addPrescription.medicaments)
         {
             if (! await _hospitalRepository.DoesMedicamentExist(medicament.idMedicament))
@@ -46,18 +49,23 @@ public class HospitalController:ControllerBase
                 return NotFound("Given idDoctor doesn't exists");
             }
             
-            
-            using (TransactionScope scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
-            { 
-                var idPrescription = await _hospitalRepository.AddPrescription(addPrescription);
-
-                foreach (var medd in addPrescription.medicaments) 
-                {
-                    await _hospitalRepository.AddPrescriptionAndMedicament(idPrescription, medd);
-                }
-                scope.Complete();
-            }
+            // medicaments.Add();
+           
         }
+        
+         using (TransactionScope scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+                    { 
+                        var idPrescription = await _hospitalRepository.AddPrescription(addPrescription);
+        
+                        foreach (var medd in addPrescription.medicaments) 
+                        {
+                            await _hospitalRepository.AddPrescriptionAndMedicament(idPrescription, medd);
+                        }
+                        scope.Complete();
+                    }
+        
+        
+        
         return Ok();
     }
 
